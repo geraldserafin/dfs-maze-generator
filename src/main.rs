@@ -48,24 +48,21 @@ impl Level {
                             && *level.cell_at(x, y) == CellType::Wall
                     });
                     // randomise move
-                    match directions.choose(&mut rng) {
-                        Some(dir) => {
-                            // make a path
-                            *level.cell_at(
-                                (current.0 + dir.0) as usize,
-                                (current.1 + dir.1) as usize,
-                            ) = CellType::Empty;
+                    if let Some(dir) = directions.choose(&mut rng) {
+                        // make a path
+                        *level.cell_at(
+                            (current.0 + dir.0) as usize,
+                            (current.1 + dir.1) as usize,
+                        ) = CellType::Empty;
 
-                            *level.cell_at(
-                                (current.0 + 2 * dir.0) as usize,
-                                (current.1 + 2 * dir.1) as usize,
-                            ) = CellType::Empty;
-                            // push new elements onto the stack
-                            stack.push(current);
-                            stack.push((current.0 + 2 * dir.0, current.1 + 2 * dir.1));
-                        }
-                        None => {}
-                    };
+                        *level.cell_at(
+                            (current.0 + 2 * dir.0) as usize,
+                            (current.1 + 2 * dir.1) as usize,
+                        ) = CellType::Empty;
+                        // push new elements onto the stack
+                        stack.push(current);
+                        stack.push((current.0 + 2 * dir.0, current.1 + 2 * dir.1));
+                    }
                 }
                 None => break,
             }
